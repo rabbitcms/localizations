@@ -1,0 +1,33 @@
+{
+    "name": "rabbitcms/localizations",
+    "description": "Localizations support for Laravel 5.3+",
+    "keywords": [
+        "modules",
+        "laravel",
+        "module",
+        "rabbitcms"
+    ],
+    "require": {
+        "php": ">=7.0.9",
+        "laravel/framework": "5.3.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kulyk Dmytro",
+            "email": "lnkvisitor.ts@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "RabbitCMS\\Localizations\\": "src/"
+        }
+    },
+    "extra": {
+        "module": {
+            "providers": [
+                "RabbitCMS\\Localizations\\ModuleProvider"
+            ]
+        }
+    }
+}
