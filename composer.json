@@ -1,6 +1,6 @@
 {
     "name": "rabbitcms/localizations",
-    "description": "Localizations support for Laravel 5.3+",
+    "description": "Localizations support for Laravel 5.4",
     "keywords": [
         "modules",
         "laravel",
@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=7.0.9",
-        "laravel/framework": "^5.3"
+        "laravel/framework": "^5.4"
     },
     "license": "MIT",
     "authors": [

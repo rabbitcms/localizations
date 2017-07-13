@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace RabbitCMS\Localizations;
 
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
@@ -37,8 +38,9 @@ class ModuleProvider extends ServiceProvider
      */
     protected function registerUrlGenerator()
     {
-        $this->app['url'] = $this->app->share(function (Application $app) {
+        $this->app->bind('url', 'url.localized');
 
+        $this->app->singleton('url.localized', function (Application $app) {
             $routes = $app->make('router')->getRoutes();
 
             // The URL generator needs the route collection that exists on the router.
@@ -46,7 +48,7 @@ class ModuleProvider extends ServiceProvider
             // and all the registered routes will be available to the generator.
             $app->instance('routes', $routes);
 
-            $url = new UrlGenerator($routes, $app->rebinding('request', $this->requestRebinder()));
+            $url = new LocalizedUrlGenerator($routes, $app->rebinding('request', $this->requestRebinder()));
 
             $url->setSessionResolver(function () {
                 return $this->app->make('session');
