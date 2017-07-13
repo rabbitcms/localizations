@@ -4,6 +4,7 @@ namespace RabbitCMS\Localizations;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use ReflectionClass;
 
 /**
@@ -23,7 +24,7 @@ class LocalizationMiddleware
         if (count($locales) && in_array($segment, $locales)) {
             $class = new ReflectionClass($request);
             $segments = $request->segments();
-            \Lang::setLocale(array_shift($segments));
+            App::setLocale(array_shift($segments));
             $property = $class->getProperty('pathInfo');
             $property->setAccessible(true);
             $property->setValue($request, '/' . implode('/', $segments));
