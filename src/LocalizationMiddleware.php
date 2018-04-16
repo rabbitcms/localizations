@@ -15,7 +15,9 @@ class LocalizationMiddleware
     /**
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
+     * @throws \ReflectionException
      */
     public function handle(Request $request, Closure $next)
     {

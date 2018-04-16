@@ -9,7 +9,8 @@
     ],
     "require": {
         "php": ">=7.0.9",
-        "laravel/framework": "^5.4"
+        "laravel/framework": "^5.4",
+        "symfony/translation": "^3.4 | ^4.0"
     },
     "license": "MIT",
     "authors": [
@@ -21,7 +22,10 @@
     "autoload": {
         "psr-4": {
             "RabbitCMS\\Localizations\\": "src/"
-        }
+        },
+        "files": [
+            "src/strftime.php"
+        ]
     },
     "extra": {
         "module": {
