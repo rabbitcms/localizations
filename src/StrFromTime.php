@@ -107,11 +107,16 @@ class StrFromTime
      *
      * @return string
      */
-    public static function format(string $format, $time, string $locale = null): string
+    public static function format(string $format, $time = null, string $locale = null): string
     {
+        if ($time === null) {
+            $time = new \DateTime();
+        }
+
         if ($time instanceof \DateTimeInterface) {
             $time = $time->getTimestamp();
         }
+
         $locale = $locale ?? App::getLocale();
         static::setLocale($locale);
 
