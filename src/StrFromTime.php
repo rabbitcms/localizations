@@ -124,7 +124,7 @@ class StrFromTime
             $locale = setlocale(LC_TIME, 0);
             setlocale(LC_TIME, implode('.', explode('.', $locale, 2) + [null, 'UTF-8']));
             return preg_replace_callback(
-                '#(?<!%)((?:%%)*)%(?<char>.)(?:\{(?<params>[^}]+)\})?#',
+                '#(?<!%)((?:%%)*)%(?<char>.)(?:\{(?<params>[^}]*)\})?#',
                 function (array $matches) use ($time) {
                     switch ($matches['char']) {
                         case 'B':
