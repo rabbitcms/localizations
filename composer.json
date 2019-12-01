@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=7.0.9",
-        "laravel/framework": "^5.4",
+        "laravel/framework": "^5.4 | ^6.0",
         "symfony/translation": "^3.4 | ^4.0"
     },
     "license": "MIT",
