@@ -24,12 +24,13 @@ class LocalizationMiddleware
         $locales = (array)\Config::get('app.locales', []);
         $segment = $request->segment(1);
         if (count($locales) && in_array($segment, $locales)) {
+            $request->server->set('REQUEST_URI',preg_replace("/^\/{$segment}/",'',$request->server->get('REQUEST_URI')));
             $class = new ReflectionClass($request);
             $segments = $request->segments();
-            App::setLocale(array_shift($segments));
+            App::setLocale($segment);
             $property = $class->getProperty('pathInfo');
             $property->setAccessible(true);
-            $property->setValue($request, '/' . implode('/', $segments));
+            $property->setValue($request, null);
         }
         return $next($request);
     }
