@@ -31,6 +31,9 @@ class LocalizationMiddleware
             $property = $class->getProperty('pathInfo');
             $property->setAccessible(true);
             $property->setValue($request, null);
+            $property = $class->getProperty('requestUri');
+            $property->setAccessible(true);
+            $property->setValue($request, null);
         }
         return $next($request);
     }
