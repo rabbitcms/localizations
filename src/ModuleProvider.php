@@ -1,10 +1,13 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 namespace RabbitCMS\Localizations;
 
+use Illuminate\Routing\Route;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -18,62 +21,34 @@ class ModuleProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerUrlGenerator();
+        $this->app->extend('url', function (UrlGenerator $generator) {
+            return $generator->formatPathUsing(function ($path, ?Route $route) {
+                if (is_null($route)) {
+                    return $path;
+                }
+                $needs = (array) ($route->getAction()['locale'] ?? false);
+                $needs = end($needs);
+                if (! $needs) {
+                    return $path;
+                }
+                $locale = Lang::getLocale();
+
+                if ($locale !== Lang::getFallback()) {
+                    return $locale.'/'.ltrim($path, '/');
+                }
+
+                return $path;
+            });
+        });
     }
 
     /**
-     * @param Kernel $kernel
+     * @param  Kernel  $kernel
      */
     public function boot(Kernel $kernel)
     {
         if ($kernel instanceof HttpKernel) {
             $kernel->pushMiddleware(LocalizationMiddleware::class);
         }
-    }
-
-    /**
-     * Register the URL generator service.
-     *
-     * @return void
-     */
-    protected function registerUrlGenerator()
-    {
-        $this->app->bind('url', 'url.localized');
-
-        $this->app->singleton('url.localized', function (Application $app) {
-            $routes = $app->make('router')->getRoutes();
-
-            // The URL generator needs the route collection that exists on the router.
-            // Keep in mind this is an object, so we're passing by references here
-            // and all the registered routes will be available to the generator.
-            $app->instance('routes', $routes);
-
-            $url = new LocalizedUrlGenerator($routes, $app->rebinding('request', $this->requestRebinder()));
-
-            $url->setSessionResolver(function () {
-                return $this->app->make('session');
-            });
-
-            // If the route collection is "rebound", for example, when the routes stay
-            // cached for the application, we will need to rebind the routes on the
-            // URL generator instance so it has the latest version of the routes.
-            $app->rebinding('routes', function (Application $app, $routes) {
-                $app->make('url')->setRoutes($routes);
-            });
-
-            return $url;
-        });
-    }
-
-    /**
-     * Get the URL generator request rebinder.
-     *
-     * @return \Closure
-     */
-    protected function requestRebinder()
-    {
-        return function (Application $app, $request) {
-            $app->make('url')->setRequest($request);
-        };
     }
 }
