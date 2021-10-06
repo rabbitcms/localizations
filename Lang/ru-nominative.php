@@ -9,7 +9,7 @@ return [
     'July' => 'июль',
     'August' => 'август',
     'September' => 'сентябрь',
-    'October' => 'окнтябрь',
+    'October' => 'октябрь',
     'November' => 'ноябрь',
     'December' => 'декабрь'
 ];
