@@ -33,7 +33,7 @@ class ModuleProvider extends ServiceProvider
                 }
                 $locale = Lang::getLocale();
 
-                if ($locale !== Lang::getFallback()) {
+                if ($locale && $locale !== Lang::getFallback()) {
                     return "/{$locale}/".ltrim($path, '/');
                 }
 
